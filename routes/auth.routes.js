@@ -1,8 +1,17 @@
 const router = require("express").Router();
-const { signin, refreshToken } = require("../controllers/auth.controllers");
-const { fieldsValidationLogin } = require("../middleware/login.middleware");
+const {
+  signin,
+  logout,
+  verifyToken,
+  signup,
+} = require("../controllers/auth.controllers");
+const {
+  checkLoginFields,
+  checkSignupFields,
+} = require("../middleware/checkfields.middleware");
 
-router.post("/", fieldsValidationLogin, signin);
-router.post("/refreshToken", refreshToken);
+router.post("/", checkLoginFields, signin);
+router.post("/signup", checkSignupFields, signup);
+router.post("/logout", verifyToken, logout);
 
 module.exports = router;

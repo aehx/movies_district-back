@@ -17,9 +17,35 @@ exports.createUser = async (user) => {
           email: user.email,
           password: hashedPassword,
         },
+        watchList: [],
       });
       return await newUser.save();
     }
+  } catch (e) {
+    throw e;
+  }
+};
+
+exports.addFavoritesMovie = async (username, movieId) => {
+  try {
+    const userFound = await User.findOne({ username });
+    if (!userFound) {
+      return { error: "User not found" };
+    }
+    let updatedUser;
+    if (userFound.watchList.includes(movieId)) {
+      await User.findOneAndUpdate(
+        { username: username },
+        { $pull: { watchList: movieId } }
+      );
+    } else {
+      await User.findOneAndUpdate(
+        { username: username },
+        { $push: { watchList: movieId } }
+      );
+    }
+    updatedUser = await User.findOne({ username });
+    return updatedUser;
   } catch (e) {
     throw e;
   }

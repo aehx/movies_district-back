@@ -11,8 +11,6 @@ exports.app = app;
 
 app.use(cookieParser());
 
-require("./config/jwt.config");
-
 app.use(
   cors({
     origin: ["http://localhost:3000"],

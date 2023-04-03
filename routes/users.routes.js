@@ -1,11 +1,11 @@
-const { logout, signup } = require("../controllers/user.controller");
-const { fieldsValidationSignup } = require("../middleware/login.middleware");
+const { verifyToken } = require("../controllers/auth.controllers");
+const {
+  addToWatchlist,
+  getUserMovies,
+} = require("../controllers/user.controller");
 const router = require("express").Router();
 
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a resource');
-// });
-router.post("/", fieldsValidationSignup, signup);
-router.post("/logout", logout);
+router.put("/updateWatchlist", verifyToken, addToWatchlist);
+router.post("/getUserMovies", verifyToken, getUserMovies);
 
 module.exports = router;

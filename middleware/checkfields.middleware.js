@@ -1,6 +1,6 @@
 const { body, validationResult } = require("express-validator");
 
-exports.fieldsValidationSignup = [
+exports.checkSignupFields = [
   body("email")
     .trim()
     .not()
@@ -19,13 +19,13 @@ exports.fieldsValidationSignup = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(200).json({ errors: errors.array() });
+      req.fieldError = { errors: errors.array() };
     }
     next();
   },
 ];
 
-exports.fieldsValidationLogin = [
+exports.checkLoginFields = [
   body("email")
     .trim()
     .not()
@@ -43,7 +43,7 @@ exports.fieldsValidationLogin = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(200).json({ errors: errors.array() });
+      req.fieldError = { errors: errors.array() };
     }
     next();
   },

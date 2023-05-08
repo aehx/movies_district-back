@@ -78,6 +78,10 @@ exports.signin = async (req, res, next) => {
 exports.signup = async (req, res, next) => {
   const body = req.body;
   try {
+    const user = await findUserPerEmail(body.email);
+    if (user) {
+      res.status(400).json({ error: "user already exist" });
+    }
     if (req.fieldError) {
       const { fieldError } = req;
       res.status(400).json(fieldError);

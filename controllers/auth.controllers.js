@@ -1,7 +1,11 @@
 const jwt = require("jsonwebtoken");
 const REFRESH_SECRET = process.env.REFRESH_SECRET;
 const secret = process.env.SECRET;
-const { findUserPerEmail, createUser } = require("../queries/user.queries");
+const {
+  findUserPerEmail,
+  createUser,
+  findUserPerUserName,
+} = require("../queries/user.queries");
 
 let refreshedTokens = [];
 
@@ -78,9 +82,10 @@ exports.signin = async (req, res, next) => {
 exports.signup = async (req, res, next) => {
   const body = req.body;
   try {
-    const user = await findUserPerEmail(body.email);
-    if (user) {
-      res.status(400).json({ error: "user already exist" });
+    const userEmail = await findUserPerEmail(body.email);
+    const userUserName = await findUserPerUserName(body.username);
+    if (userUserName || userEmail) {
+      res.status(400).json({ error: "userName/Email already exist" });
     }
     if (req.fieldError) {
       const { fieldError } = req;

@@ -4,6 +4,10 @@ exports.findUserPerEmail = (email) => {
   return User.findOne({ "local.email": email }).exec();
 };
 
+exports.findUserPerUserName = (username) => {
+  return User.findOne({ username: username }).exec();
+};
+
 exports.createUser = async (user) => {
   try {
     const isUserAlreadyExist = await User.findOne({ username: user.username });
